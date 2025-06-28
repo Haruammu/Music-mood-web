@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mood Music Player</title>
+<style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      background: linear-gradient(to right, #ffecd2, #fcb69f);
+      color: #333;
+      padding: 50px;
+      margin: 0;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+    .section {
+      margin: 20px 0;
+    }
+    button {
+      background-color: #ffffffcc;
+      border: none;
+      border-radius: 12px;
+      padding: 15px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 10px;
+    }
+    button:hover {
+      background-color: #fff;
+      color: #000;
+      transform: scale(1.05);
+    }
+    input {
+      padding: 12px;
+      width: 300px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin-right: 10px;
+    }
+    .label {
+      font-size: 1.2em;
+      margin-top: 30px;
+    }
+    #languageStatus {
+      font-weight: bold;
+      color: green;
+      margin-top: 10px;
+    }
+</style>
+</head>
+<body>
+<h1>🎧 Mood Music Player</h1>
+<div class="section">
+<div class="label">1️⃣ Select your preferred language:</div>
+<button onclick="setLanguage('english')">English</button>
+<button onclick="setLanguage('hindi')">Hindi</button>
+<button onclick="setLanguage('telugu')">Telugu</button>
+<button onclick="setLanguage('korean')">Korean</button>
+<div id="languageStatus"></div>
+</div>
+<div class="section">
+<div class="label">2️⃣ Select your mood:</div>
+<button onclick="playMood('happy')">😊 Happy</button>
+<button onclick="playMood('sad')">😢 Sad</button>
+<button onclick="playMood('energetic')">⚡ Energetic</button>
+<button onclick="playMood('relaxed')">🌙 Relaxed</button>
+</div>
+<div class="section">
+<div class="label">3️⃣ Or describe how you feel:</div>
+<input type="text" id="userMood" placeholder="e.g. I feel like dancing">
+<button onclick="analyzeMood()">Play</button>
+</div>
+<script>
+    let selectedLanguage = 'english'; // default
+    const playlists = {
+      happy: {
+english: 'https://open.spotify.com/search/english%20songs',
+hindi: 'https://open.spotify.com/search/hindi%20songs%20happy',
+telugu: 'https://open.spotify.com/search/telugu',
+korean: 'https://open.spotify.com/search/kpop%20happy%20songs'
+      },
+      sad: {
+english: 'https://open.spotify.com/search/english%20sad%20songs%20of%20taylor%20swift',
+hindi: 'https://open.spotify.com/search/hindi%20sad%20songs',
+telugu: 'https://open.spotify.com/playlist/4gyertnXGs2sSeUWOAKUP2?si=__Uu2r7bQ6qzSzMb-xqRQA&pi=1KbX3TX6RnSPE',
+korean: 'https://open.spotify.com/search/korean%20sad%20songs'
+      },
+      energetic: {
+english: 'https://open.spotify.com/playlist/37i9dQZF1DX8FwnYE6PRvL',
+hindi: 'https://open.spotify.com/search/hindi%20energetic',
+telugu: 'https://open.spotify.com/playlist/5AjguFfQcwckxklPO4XvT5?si=y84DR03vRvmvBe35UUd-uA',
+korean: 'https://open.spotify.com/search/kpop%20workout%20energetic'
+      },
+      relaxed: {
+english: 'https://open.spotify.com/playlist/37i9dQZF1DWU0ScTcjJBdj',
+hindi: 'https://open.spotify.com/playlist/02uXGKglrYZD67gcyxkvTd?si=KbdJY32EThiUc32AOMreXA',
+telugu: 'https://open.spotify.com/playlist/37i9dQZF1DWWA4PDpFSM3c?si=3hgPh4gKT-qRE1lkSFKxVQ',
+korean: 'https://open.spotify.com/search/korean%20chill%20songs'
+      }
+    };
+    function setLanguage(lang) {
+      selectedLanguage = lang;
+      document.getElementById('languageStatus').innerText = `✔ Language selected: ${lang.toUpperCase()}`;
+    }
+    function playMood(mood) {
+      const url = playlists[mood]?.[selectedLanguage];
+      if (url) {
+        window.open(url, '_blank');
+      } else {
+        alert("No playlist found for this mood-language combination.");
+      }
+    }
+    function analyzeMood() {
+      const input = document.getElementById('userMood').value.toLowerCase().trim();
+      if (!input) {
+        alert("Please describe your mood.");
+        return;
+      }
+      let mood = '';
+      if (input.match(/happy|joy|smile|cheerful/)) {
+        mood = 'happy';
+      } else if (input.match(/sad|cry|low|depressed/)) {
+        mood = 'sad';
+      } else if (input.match(/energy|dance|excited|run|party/)) {
+        mood = 'energetic';
+      } else if (input.match(/calm|relax|peace|soft|sleep/)) {
+        mood = 'relaxed';
+      }
+      if (mood) {
+        playMood(mood);
+      } else {
+        alert('😕 Sorry, I couldn’t understand your mood.\nTry using words like happy, sad, relax, dance.');
+      }
+    }
+</script>
+</body>
+</html>
